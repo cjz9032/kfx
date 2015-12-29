@@ -1,0 +1,13 @@
+
+		<div class="step-content">
+			<div>{{ stepPanel.texts[stepPanel.currentStep - 1]}}</div>
+			<div class="next-step">
+				<ul class="step-progressing">
+					<li data-ng-repeat="item in stepPanel.trainnings.length | range" data-ng-class="{active: stepPanel.currentStep == item}">
+					</li>
+				</ul>
+				<button type="button" class="btn btn-link btn-next pull-right" ng-click="stepPanel.trainningInstance.nextStep({$event:$event, step:step});">Next</button>
+			</div>
+		</div>
+
+	

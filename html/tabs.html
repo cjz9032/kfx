@@ -1,0 +1,21 @@
+
+		<ion-tabs class="tabs-icon-top tabs-color-active-balanced " ng-class="{'tabs-item-hide': $root.hideTabs}">
+
+			<!--  Order Tab-->
+			<ion-tab title="广告联盟" badge="5" icon-off="ion-aperture" icon-on="ion-aperture" ui-sref="tab.orderList({TypeID:Order.typeIDcode.rich,state:1})">
+				<ion-nav-view name="tab-order"></ion-nav-view>
+			</ion-tab>
+			<!-- Invitation Tab 
+				
+					<ion-tab title="Invitation" icon-off="ion-ios-gear-outline" icon-on="ion-ios-gear" ui-sref="tab.invitation">
+				<ion-nav-view name="tab-invitation"></ion-nav-view>
+			</ion-tab>
+			-->
+
+			<!-- Account Tab -->
+			<ion-tab title="个人中心" icon-off="ion-person" icon-on="ion-person" ui-sref="tab.account">
+				<ion-nav-view name="tab-account"></ion-nav-view>
+			</ion-tab>
+
+		</ion-tabs>
+	

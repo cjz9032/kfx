@@ -1,0 +1,92 @@
+
+			<ion-view>
+
+				<ion-nav-title>
+					{{taker.order.Title}}
+				</ion-nav-title>
+
+				<ion-nav-buttons side="left" ng-init="vm={}">
+
+					<button fix-history where="tab.account" ng-if="vm.boolIf===undefined ? true : vm.boolIf" bool-if="vm.boolIf" class='button button-icon icon ion-android-arrow-back'></button>
+				</ion-nav-buttons>
+
+				<ion-content padding="true" style="background-color:  #EEEEEE">
+
+					<div>
+						<span>
+			 	开始时间{{taker.order.BeginTime | date:'yyyy/MM/dd  HH:mm'}}
+			 	</span>
+						<br />
+						<span>
+			 		结束时间  {{taker.order.EndTime | date:'yyyy/MM/dd  HH:mm'}}
+			 	</span>
+						<br />
+						<span ng-if="taker.order.TypeID===Order.typeIDcode.poor">
+			 		单次点击价格{{taker.order.Price}}元
+			 	</span>
+						<br />
+
+						<p>
+							订单状态 {{ taker.isText() }}
+						</p>
+					</div>
+					<br>
+					<div class="item item-divider text-left" ng-init="t1Show=true;" ng-click="t1Show=!t1Show">
+						广告详情 {{taker.order.TypeID===Order.typeIDcode.rich? '(图文)' : '(链接)' }}<i class="ion" ng-class="{true: 'ion-android-arrow-dropup', false: 'ion-android-arrow-dropdown'}[t1Show]"></i>
+					</div>
+					<div class="fade" ng-show="t1Show">
+						<br />
+						<span>
+				分享内容:(转发以下图文链接)
+			</span>
+						<br />
+						<p class="text share-text" data-tap-disabled="true">
+							{{taker.order.Intro}}
+						</p>
+						<p ng-if="taker.order.TypeID===Order.typeIDcode.poor" class="text share-text">
+							<!--
+                          <span>原:{{taker.order.LinkUrl}}</span><br />
+                          转:
+                            -->
+							<span data-tap-disabled="true">{{baseUrl+'/shareLink.aspx?TOID='+taker.TOID}}</span>
+							<br>
+							<button class="button button-positive" ng-click="shareBackdrop()">分享</button>
+						</p>
+						<div ng-if="taker.order.TypeID===Order.typeIDcode.rich" ng-init="files=taker.order.AttachFiles">
+							<div class="row  " ng-repeat="i in  getArr( Math.ceil( files.length/3 ) ) track by $index">
+
+								<div class="col col-33" ng-repeat="item in  files  | limitTo : 3 : i*3  track by $index" ng-init="k=$index">
+
+									<div style="height: 100px;background-color: #CCC;line-height: 100px;" ng-click="bigIMG(files[k+i*3])">
+										<img width="100%" height="auto" ng-src="{{files[k+i*3]}}" data-tap-disabled="true" style="max-height: 100%;vertical-align: middle;" />
+									</div>
+
+								</div>
+
+							</div>
+							<br />
+
+						</div>
+					</div>
+					<div ng-if="taker.order.TypeID===Order.typeIDcode.rich">
+						<div class="item item-divider text-left" ng-init="t2Show=true;" ng-click="t2Show=!t2Show">
+							任务进度 <i class="ion" ng-class="{true: 'ion-android-arrow-dropup', false: 'ion-android-arrow-dropdown'}[t1Show]"></i>
+						</div>
+						<div class="fade" ng-show="t2Show">
+							<div ng-if=" taker.State>3 ">
+								<span>已传图片:</span>
+								<img ng-click="bigIMG(taker.AttachFiles[0])" ng-src="{{taker.AttachFiles[0]}}" width="100px" />
+							</div>
+
+							<div ng-if=" taker.State>0 && taker.State<4 || taker.isIMGReject() ">
+								<button class="button button-balanced" ng-init="formData.$$srcsTemp=[]" ng-click="getPics(formData.$$srcsTemp,1)">相册选取</button>
+								<button class="button button-balanced" ng-click="saveProgress(taker.TOID,formData.$$srcsTemp[0])" ng-disabled="!formData.$$srcsTemp[0]">保存进度</button>
+								<br />
+								<img data-tap-disabled="true" ng-src="{{formData.$$srcsTemp[0]}}" width="100px" />
+							</div>
+						</div>
+					</div>
+				</ion-content>
+
+			</ion-view>
+		

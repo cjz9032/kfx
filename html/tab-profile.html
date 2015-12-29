@@ -1,0 +1,133 @@
+
+			<ion-view view-title="个人资料{{Profile.info.State===2?'(估价中)':''}}">
+
+				<ion-nav-buttons side="left" ng-init="vm2={}">
+					<button fix-history where="tab.account" ng-if="vm2.boolIf===undefined ? true : vm2.boolIf" bool-if="vm2.boolIf" class='button button-icon icon ion-android-arrow-back'></button>
+				</ion-nav-buttons>
+
+				<ion-content class="padding">
+					<form name="edit_form" novalidate ng-submit="formData.submit()">
+						<div class="list">
+
+							<a class="item item-icon-left" href="javascript:;" style="line-height: 30px;">
+								<i class="icon ion-ios-telephone"></i> 手机号码
+								<span class="item-note" style="    width: 100%;
+   
+	    padding-left: 12px;
+    position: absolute;">
+      <input style="    width: 100%;" type="text" required="required" name="Phone" ng-pattern="/\d{11}/" ng-init="profileDetail.Phone=Profile.info.Phone" ng-model="profileDetail.Phone" />
+    </span>
+							</a>
+							<a class="item item-icon-left" href="javascript:;">
+								<i class="icon ion-ios-location"></i>
+								<region-select wrap-region="vm2.wrapRegion" init-region="Profile.info.District" force='false' result="profileDetail.District"></region-select>
+
+								<input name="District" type="hidden" required="required" ng-model="profileDetail.District" />
+								<span class="item-note">  
+    </span>
+							</a>
+							<!--
+		<a class="item item-icon-left" href="javascript:;">
+								<i class="icon ion-ios-paw"></i> 微信昵称
+								<span class="item-note" ng-bind="Profile.info.Title"> </span>
+							</a>
+-->
+
+							<a class="item item-icon-left" href="javascript:;" style="line-height: 30px; ">
+								<i class="icon ion-person-stalker"></i> 好友数量
+								<span class="item-note">
+     <input type="number" name="" id="" value="0" style="width: 4em;" 
+     	ng-init="profileDetail.Rate1=Profile.info.Rate1||0"
+     	 required="required" ng-model="profileDetail.Rate1" />
+    </span>
+							</a>
+
+						</div>
+						<!--
+	<div ng-repeat="module in Profile.moduleCode track by $index">
+
+					<div class="item item-divider padding">
+						{{module.name}}:<span class="stable-dark">(最多选{{module.max}}个)</span>
+					</div>
+
+					<div class="row checkbox-contain" ng-repeat="i in getArr(1,  (Math.ceil( Profile.tags[module.tag].length/4 )+1) ) track by $index" ng-init="fIndex=$index">
+
+						<div class="col col-25" ng-repeat="item in  Profile.tags[module.tag]  | limitTo : 4 : $index*4 track by $index">
+							<input type="checkbox" ng-model="item.$$isChecked" ng-change="checkCount( Profile.tags[module.tag],item,module.max)" id="indst-{{item.TagID}}" value="" />
+							<label style="font-size: 12px;" for="indst-{{item.TagID}}">&nbsp;{{item.Name}}</label>
+						</div>
+
+					</div>
+
+				</div>
+				<button ng-click="Profile.putTags()">标签 </button>
+                -->
+
+						<!--
+ 		<div class="item item-divider padding">
+					朋友圈
+				</div>
+				<div class="list">
+
+					<label class="item item-input item-select">
+						<div class="input-label">
+							你每天发几条朋友圈:
+						</div>
+						<select>
+							<option ng-repeat="item in Profile.dailySendTags track by $index">{{item.name}}</option>
+
+						</select>
+					</label>
+
+					<label class="item item-input item-select">
+						<div class="input-label">
+							一天内朋友圈的数量:
+						</div>
+						<select>
+							<option ng-repeat="item in Profile.dailyRecvTags track by $index">{{item.name}}</option>
+						</select>
+					</label>
+				</div>
+-->
+
+						<div class="item item-divider padding">
+							上传截图
+						</div>
+						<div class="list" style="border: 1px solid #DDDDDD;
+    padding: 12px;
+	
+   ">
+							<div>好友数量截图上传:
+								<br>打开微信通讯录拉到最下面截图
+								<div>
+									<img data-tap-disabled="true" ng-click="bigIMG(formData.$$friendSrcsTemp[0]||Profile.info.Pic2)" ng-src="{{formData.$$friendSrcsTemp[0]||Profile.info.Pic2}}" width="100px" />
+									<input name="Pic2" ng-required="!Profile.info.Pic2" type="hidden" ng-model="formData.$$friendSrcsTemp[0]" />
+								</div>
+								<div class="button button-balanced" ng-click="openModal('TLpic.html','好友数量截图示范')">查看示范</div>
+								<div class="button button-balanced" ng-init="formData.$$friendSrcsTemp=[]" ng-click="getPics(formData.$$friendSrcsTemp,1)">相册选取</div>
+								<br>
+
+							</div>
+							<div>
+								朋友圈截图:
+								<br>三个月内多人回复或评论
+								<div>
+									<img data-tap-disabled="true" ng-click="bigIMG(formData.$$circleSrcsTemp[0]||Profile.info.Pic3)" ng-src="{{formData.$$circleSrcsTemp[0]||Profile.info.Pic3}}" width="100px" />
+									<input name="Pic3" ng-required="!Profile.info.Pic3" type="hidden" ng-model="formData.$$circleSrcsTemp[0]" />
+								</div>
+								<div class="button button-balanced" ng-click="openModal('FNpic.html','朋友圈截图示范')">查看示范</div>
+								<div class="button button-balanced" ng-init="formData.$$circleSrcsTemp=[]" ng-click="getPics(formData.$$circleSrcsTemp,1)">相册选取</div>
+								<br>
+
+							</div>
+
+						</div>
+
+						<button style="" type="submit" ng-disabled="edit_form.$invalid" class="button button-balanced">
+							提　交
+						</button>
+						<p style="height:60px;"></p>
+					</form>
+				</ion-content>
+			</ion-view>
+		

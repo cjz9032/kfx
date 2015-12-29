@@ -1,0 +1,52 @@
+
+			<ion-view>
+
+				<ion-nav-title>
+					任务大厅
+					<!-- {{params.TypeID===Order.typeIDcode.poor.toString()? '任务大厅(文章)' : '任务大厅(图文)' }}  -->
+				</ion-nav-title>
+
+				<div class="tabs-striped tabs-top tabs-background-positive tabs-color-light">
+					<div class="tabs">
+						<a class="tab-item" ng-class="{'active':params.TypeID==Order.typeIDcode.rich}" ui-sref="tab.orderList({TypeID:Order.typeIDcode.rich,state:1})">
+                                              图文广告
+                    </a>
+						<a class="tab-item" ng-class="{'active':params.TypeID==Order.typeIDcode.poor}" ui-sref="tab.orderList({TypeID:Order.typeIDcode.poor,state:1})">
+                                              链接广告
+                    </a>
+					</div>
+				</div>
+
+				<ion-content style="background-color:  #EEEEEE;top:88px">
+
+					<ion-list>
+						<ion-item ng-disabled="item.IsTaker" ui-sref="tab.orderView({TaskID:item.TaskID})" item-height="96px" item-width="100%" collection-repeat="item in 
+						(Order.data  | filter: {TypeID:params.TypeID*1,State:1,isTags:true} :true          ) track by item.TaskID">
+
+							<span style="font-size: 1.2em;font-weight: 700;">{{item.Title}}</span>
+
+							<span class="item-note">
+     <span  ng-if="item.isMine"   class="assertive">
+    我的项目
+     </span>
+							<button ng-disabled="item.IsTaker" ng-if="!item.isMine" class="button button-small button-balanced">
+								{{item.IsTaker?'已接单':'快来抢'}}
+							</button>
+							<br /> <span ng-if="item.TypeID===Order.typeIDcode.poor">  {{item.Price}}元 </span>
+							</span>
+
+							<br>
+							<span>{{item.BeginTime|timeTip}}</span>
+							<br> 
+							<span class="order-tag"><i class="ion ion-social-yen"></i>{{item.Budget| currency:"":2}}</span>
+							<span class="order-tag"><i class="ion ion-person-stalker"></i>{{item.JoinNum}}</span>
+
+							</span>
+
+						</ion-item>
+
+					</ion-list>
+				</ion-content>
+
+			</ion-view>
+		

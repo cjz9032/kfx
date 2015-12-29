@@ -1,0 +1,23 @@
+
+
+		<div ng-init="select=0;src='image/tutorial/turor1.jpg'" class="tabs-striped tabs-top   tabs-color-light">
+			<div class="tabs" style="top: 0;">
+				<a class="tab-item" ng-click="select=0;src='image/tutorial/turor1.jpg'" ng-class="{active:select===0}">
+      
+        图文教程
+      </a>
+				<a class="tab-item" ng-click="select=1;src='image/tutorial/turor2.jpg'" ng-class="{active:select===1}">
+      
+        链接教程
+      </a>
+
+			</div>
+		</div>
+
+		<div style="padding-top: 44px;">
+
+			<img ng-src="{{src}}" width="100%" />
+
+		</div>
+
+	

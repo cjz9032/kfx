@@ -1,0 +1,28 @@
+
+			<ion-view view-title="我的订单">
+
+				<ion-content style="background-color:  #EEEEEE" class="order">
+
+					<div class="row  ">
+						<div class="col col-50" ui-sref="tab.orderList({TypeID:Order.typeIDcode.rich,state:1})">
+							任务大厅
+						</div>
+
+						<div class="col col-50" ui-sref="tab.takerList({TypeID:Order.typeIDcode.rich})">
+							已接订单
+						</div>
+
+					</div>
+
+					<div class="row  ">
+						<div class="col col-50" ui-sref="tab.publish( {} )">
+							发布任务
+						</div>
+						<div class="col col-50" ui-sref="tab.orderListMine({state:1})">
+							我发布的任务
+						</div>
+					</div>
+				</ion-content>
+
+			</ion-view>
+		

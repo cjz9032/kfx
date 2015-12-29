@@ -1,0 +1,158 @@
+
+			<ion-view>
+
+				<ion-nav-title>
+					发布广告
+				</ion-nav-title>
+
+				<ion-nav-buttons side="left">
+
+					<button fix-history where="tab.account" ng-if="vm.boolIf===undefined ? true : vm.boolIf" bool-if="vm.boolIf" class='button button-icon icon ion-android-arrow-back'></button>
+				</ion-nav-buttons>
+
+				<ion-content padding="true" style="background-color:  #EEEEEE" ng-init="formData.$$srcsTemp=[];formData.srcs=[]">
+					<form name="publish_form" novalidate ng-submit="formData.submit()">
+						<div class="list" ng-init="orderDetail.TypeID=Order.typeIDcode.rich">
+
+							<label class="item item-radio">
+								<input type="radio" name="group" ng-value="Order.typeIDcode.rich" ng-model="orderDetail.TypeID">
+								<div class="item-content">
+									图文
+								</div>
+								<i class="radio-icon ion-checkmark" style="color:#30AF52;"></i>
+							</label>
+
+							<label class="item item-radio">
+								<input type="radio" name="group" ng-value="Order.typeIDcode.poor" ng-model="orderDetail.TypeID">
+								<div class="item-content">
+									链接
+								</div>
+								<i class="radio-icon ion-checkmark" style="color:#30AF52;"></i>
+							</label>
+
+							<input name="TypeID" type="hidden" required="required" ng-model="orderDetail.TypeID" />
+
+						</div>
+						<div class="list" style="background: 
+white;">
+							<label class="item item-input item-stacked-label0">
+								<span class="input-label">广告主题</span>
+								<input type="text" name="Title" required="required" ng-model="orderDetail.Title">
+							</label>
+							<label class="item item-input ">
+								<span class="input-label">广告内容</span>
+								<textarea rows="3" name="Intro" required="required" ng-model="orderDetail.Intro" style="width: initial;"></textarea>
+							</label>
+							<label class="item item-input item-stacked-label0">
+								<span class="input-label">广告预算</span>
+								<input type="number" value="30.00" name="Budget" required="required" ng-model="orderDetail.Budget">
+							</label>
+							<label class="item item-input item-stacked-label0" ng-if="orderDetail.TypeID===Order.typeIDcode.poor">
+								<span class="input-label">分享链接</span>
+								<input type="url" name="LinkUrl" required="required" ng-required="orderDetail.TypeID===Order.typeIDcode.poor" placeholder="http://......" ng-model="orderDetail.LinkUrl">
+							</label>
+							<label class="item item-input item-stacked-label0" ng-if="orderDetail.TypeID===Order.typeIDcode.poor">
+								<span class="input-label">点击价格</span>
+								<input type="number" name="Price" value="1.00" min="0.01" required="required" ng-model="orderDetail.Price">
+							</label>
+						</div>
+						<div class="list" data-tap-disabled="true" style="background: 
+white;">
+							<p data-tap-disabled="true" class="item item-input item-stacked-label0">
+								<span class="input-label" data-tap-disabled="true">开始</span>
+								<input style="background-color: #ABA7A7;
+    border-radius: 5px;
+    margin-right: 10px;
+	    width: 100px;
+" data-tap-disabled="true" type="date" ng-model="vm.begin0" />
+								<input style="background-color: #ABA7A7;
+    border-radius: 5px;
+    margin-right: 20px;
+	    width: 80px!important; 
+		 display: inline-table;
+" data-tap-disabled="true" type="time" value="00:00" ng-model="vm.begin1" />
+							</p>
+
+							<p class="item item-input item-stacked-label0">
+
+								<span class="input-label">结束</span>
+								<input style="background-color: #ABA7A7;
+    border-radius: 5px;
+    margin-right: 10px;
+	    width: 100px;
+" data-tap-disabled="true" type="date" value="2015-10-20" ng-model="vm.end0" />
+								<input style="background-color: #ABA7A7;
+    border-radius: 5px;
+    margin-right: 20px;
+	    width: 80px!important;
+		    display: inline-table;
+" data-tap-disabled="true" type="time" value="00:00" ng-model="vm.end1" />
+							</p>
+
+						</div>
+
+						<div style="    background-color: white;
+    height: 40px;
+    line-height: 40px;    padding-left: 12px;">
+							<region-select force="true" result="vm.regionResult"></region-select>
+							<input name="District" type="hidden" required="required" ng-model="vm.regionResult" />
+						</div>
+
+						<div ng-if="orderDetail.TypeID===Order.typeIDcode.poor">
+							<div class="row">
+								<div class="col col-50">
+									<div class="button button-block button-balanced" ng-init="formData.$$titleSrcsTemp=[]" ng-click="getPics(formData.$$titleSrcsTemp,1)">标题小图片</div>
+								</div>
+							</div>
+
+							<div>
+								<img data-tap-disabled="true" ng-click="bigIMG(formData.$$titleSrcsTemp[0])" ng-src="{{formData.$$titleSrcsTemp[0]}}" width="100px" />
+								<input name="title-pic" type="hidden" ng-model="formData.$$titleSrcsTemp[0]" />
+							</div>
+
+						</div>
+
+						<div ng-if="orderDetail.TypeID===Order.typeIDcode.rich" style="font-size: 0;">
+							<div class="row  " ng-init="maxLen=9">
+								<div class="col col-50">
+									<div class="button  button-block  button-balanced" ng-disabled="formData.$$srcsTemp.length===maxLen" ng-click="getPics(formData.$$srcsTemp,maxLen-formData.$$srcsTemp.length,-2)">添加图片({{maxLen-formData.$$srcsTemp.length}})</div>
+								</div>
+							</div>
+
+							<input name="wximgs" type="hidden" ng-required="orderDetail.TypeID===Order.typeIDcode.rich" ng-model="formData.$$srcsTemp[0]" />
+							<div style="text-align: center;">
+
+								<div class="row  " ng-repeat="i in  getArr( Math.ceil( formData.$$srcsTemp.length/3 ) ) track by $index">
+
+									<div class="col col-33" ng-repeat="item in  formData.$$srcsTemp  | limitTo : 3 : i*3  track by $index" ng-init="k=$index">
+
+										<div style="height: 100px;background-color: grey;">
+
+											<img width="100%" height="auto" ng-src="{{formData.$$srcsTemp[k+i*3]}}" ng-click="getPics(formData.$$srcsTemp,1,k+i*3)" style="max-height: 100%;" />
+											<!--
+            	作者：402821051@qq.com
+            --><i ng-click="   formData.$$srcsTemp.splice(k+i*3,1)" class="ion-ios-close" style="font-size: 24px;
+position: absolute;
+margin-left: -0.5em;
+margin-top: -0.5em;"></i>
+										</div>
+
+									</div>
+
+								</div>
+
+							</div>
+						</div>
+						<!--
+	参与人数 {{orderDetail.JoinNum}}
+	价格 {{orderDetail.Price}}
+	预算 {{orderDetail.Budget=orderDetail.Price*orderDetail.JoinNum}} 
+	-->
+						<button type="submit" ng-disabled="publish_form.$invalid" class="button button-balanced">
+							提交任务
+						</button>
+					</form>
+				</ion-content>
+
+			</ion-view>
+		

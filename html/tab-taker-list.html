@@ -1,0 +1,58 @@
+
+			<ion-view>
+
+				<ion-nav-title>
+					我的任务
+					<!--
+                  {{params.TypeID===Order.typeIDcode.poor.toString()? '我的任务(链接)' : '我的任务(图文)' }}
+                     -->
+				</ion-nav-title>
+
+				<ion-nav-buttons side="left" ng-init="vm2={}">
+
+					<button fix-history where="tab.account" ng-if="vm2.boolIf===undefined ? true : vm2.boolIf" bool-if="vm2.boolIf" class='button button-icon icon ion-android-arrow-back'></button>
+				</ion-nav-buttons>
+
+				<div class="tabs-striped tabs-top tabs-background-positive tabs-color-light">
+					<div class="tabs">
+						<a class="tab-item" ng-class="{'active':params.TypeID==Order.typeIDcode.rich}" ui-sref="tab.takerList({TypeID:Order.typeIDcode.rich})">
+                                              图文广告
+                    </a>
+						<a class="tab-item" ng-class="{'active':params.TypeID==Order.typeIDcode.poor}" ui-sref="tab.takerList({TypeID:Order.typeIDcode.poor})">
+                                              链接广告
+                    </a>
+					</div>
+				</div>
+
+				<ion-content style="background-color:  #EEEEEE;top:88px;">
+
+					<ion-list>
+
+						<ion-item ui-sref="tab.takerView({TOID:taker.TOID})" item-height="96px" item-width="100%" collection-repeat="taker in 
+						(Taker.data  | filter :  myComp    ) track by taker.TOID">
+
+							<span style="font-size: 1.2em;font-weight: 700;">{{taker.order.Title}}</span>
+
+							<span class="item-note">
+     <span   ng-class="{true: 'assertive', false: 'balanced'}[taker.isIMGReject()]">
+     	 
+   {{   taker.isText()  }}
+  
+     </span>
+							<br /> <span ng-if="taker.order.TypeID===Order.typeIDcode.poor"> {{taker.order.Price}}元</span>
+							</span>
+
+							<br>
+							<span>{{taker.order.EndTime|timeTip:'end'}}</span>
+							<br>
+							<span class="order-tag"><i class="ion ion-social-yen"></i>{{taker.order.Budget| currency:"":2}}</span>
+							<span class="order-tag"><i class="ion ion-person-stalker"></i>{{taker.order.JoinNum}}</span>
+							</span>
+
+						</ion-item>
+
+					</ion-list>
+				</ion-content>
+
+			</ion-view>
+		

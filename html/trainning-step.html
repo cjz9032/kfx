@@ -1,0 +1,13 @@
+
+		<div class="trainning-step">
+			<div style="display:block; z-index:1080;left:-1000px;top:-1000px;" ng-style="positionStyle" class="step-panel {{currentTrainning.placement}} fade popover in {{currentTrainning.stepClass}}" ng-show="!isProgressing">
+				<div class="arrow"></div>
+				<div class="popover-inner">
+					<h3 class="popover-title" ng-if='currentTrainning.title'>{{currentTrainning.title}}</h3>
+					<div class="popover-content">
+					</div>
+				</div>
+			</div>
+			<ui-backdrop backdrop-class="currentTrainning.backdropClass" ng-if="currentTrainning.backdrop !== false"></ui-backdrop>
+		</div>
+	

@@ -1,0 +1,51 @@
+
+			<ion-view>
+
+				<ion-nav-title>
+					我的项目
+				</ion-nav-title>
+
+				<div class="tabs-striped tabs-top tabs-background-positive tabs-color-light">
+					<div class="tabs">
+
+						<a class="tab-item" ng-repeat="state in Order.stateCode.fixArr" ng-class="{'active':(params.state*1===state.No)}" ui-sref=" tab.orderListMine({state:state.No})">
+       {{state.Name}}
+        </a>
+
+					</div>
+				</div>
+
+				<ion-nav-buttons side="left" ng-init="vm2={}">
+
+					<button fix-history where="tab.account" ng-if="vm2.boolIf===undefined ? true : vm2.boolIf" bool-if="vm2.boolIf" class='button button-icon icon ion-android-arrow-back'></button>
+				</ion-nav-buttons>
+				<ion-content style="background-color:  #EEEEEE;top:88px">
+
+					<ion-list>
+						<ion-item ui-sref="tab.orderViewMine({TaskID:item.TaskID})" item-height="96px" item-width="100%" collection-repeat="item in 
+					(Order.data  | filter: {isMine:true,State:params.state*1} :true          )	   track by item.TaskID">
+
+							<span style="font-size: 1.2em;font-weight: 700;">{{item.Title}}</span>
+
+							<span class="item-note">
+     <span   class="balanced"  ng-if="params.state*1===state.No"  ng-repeat="state in Order.stateCode.fixArr">
+    {{state.Name}}
+     </span>
+
+							<br /> <span ng-if="item.TypeID===Order.typeIDcode.poor">  {{item.Price}}元 </span>
+							</span>
+
+							<br>
+							<span>{{item.BeginTime|timeTip}}</span>
+							<br>
+							<span class="order-tag"><i class="ion ion-social-yen"></i>{{taker.order.Budget| currency:"":2}}</span>
+							<span class="order-tag"><i class="ion ion-person-stalker"></i>{{taker.order.JoinNum}}</span>
+							</span>
+
+						</ion-item>
+
+					</ion-list>
+				</ion-content>
+
+			</ion-view>
+		
