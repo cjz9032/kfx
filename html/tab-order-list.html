@@ -20,8 +20,12 @@
 				<ion-content style="background-color:  #EEEEEE;top:88px">
 
 					<ion-list>
+						<!--
+                        	isTags:true
+                        -->
+						
 						<ion-item ng-disabled="item.IsTaker" ui-sref="tab.orderView({TaskID:item.TaskID})" item-height="96px" item-width="100%" collection-repeat="item in 
-						(Order.data  | filter: {TypeID:params.TypeID*1,State:1,isTags:true} :true          ) track by item.TaskID">
+						(Order.data  | filter: {TypeID:params.TypeID*1,State:1} :true          ) track by item.TaskID">
 
 							<span style="font-size: 1.2em;font-weight: 700;">{{item.Title}}</span>
 
@@ -30,7 +34,7 @@
     我的项目
      </span>
 							<button ng-disabled="item.IsTaker" ng-if="!item.isMine" class="button button-small button-balanced">
-								{{item.IsTaker?'已接单':'快来抢'}}
+								{{item.IsTaker?'已接单':'快来抢'}}  {{isTags? '' : '(非所在地)' }} 
 							</button>
 							<br /> <span ng-if="item.TypeID===Order.typeIDcode.poor">  {{item.Price}}元 </span>
 							</span>

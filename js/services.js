@@ -13,7 +13,7 @@ angular.module('starter.services', [])
 	};
 	this._getInfo = function() {
 		$this.info = principal.getID();
-		window.info=$this.info;
+		window.info = $this.info;
 	};
 	this.edit = function(detail, score) {
 		var dfd = $q.defer();
@@ -23,7 +23,7 @@ angular.module('starter.services', [])
 				params: detail
 			})
 			.then(function(result) {
-				$this.info.State=2;
+				$this.info.State = 2;
 				//_setData([orderDetail]);
 				dfd.resolve();
 
@@ -99,6 +99,7 @@ angular.module('starter.services', [])
 	var $this = this;
 	this.phase = {};
 	this.data = [];
+
 	function TakerData(initObj) {
 		_.map(initObj, function(val, key) {
 			this[key] = val;
@@ -146,7 +147,7 @@ angular.module('starter.services', [])
 		Order.get(taker.TaskID).then(function(order) {
 			taker.order = order;
 			dfd.resolve();
-		},function(){
+		}, function() {
 			console.log('无taskid');
 		});
 		return dfd.promise;
@@ -200,7 +201,7 @@ angular.module('starter.services', [])
 	this.queryByTask = function(TaskID) {
 		return this.query({
 			TaskID: TaskID,
-			State:4
+			State: 4
 		}, true);
 	};
 	this.query = function(params, force) {
@@ -231,7 +232,7 @@ angular.module('starter.services', [])
 	function _dealNInfo(order, accept) {
 		var dfd = $q.defer();
 		if (Profile.isInfo()) {
-			if (order.TypeID===Order.typeIDcode.rich&&Profile.isWating()) {
+			if (order.TypeID === Order.typeIDcode.rich && Profile.isWating()) {
 				alert('估价中,请耐心等待');
 			} else {
 				_deal(order, accept).then(function(TOID) {
@@ -253,10 +254,10 @@ angular.module('starter.services', [])
 		if (false) {
 			dfd.reject();
 		} else {
-			if (false&& (Profile.info.Rate5 > (order.Budget - order.JoinAmount)) ) {
+			if (false && (Profile.info.Rate5 > (order.Budget - order.JoinAmount))) {
 				alert('任务预算不足--');
 				dfd.reject();
-			} else { 
+			} else {
 				$http({
 						method: 'GET',
 						url: "/handler/Task.ashx?act=NewTaskOrder",
@@ -334,7 +335,7 @@ angular.module('starter.services', [])
 })
 
 
-.service('Order', function($q, $timeout, $http, scores, Profile, STATE_CONFIG,Region) {
+.service('Order', function($q, $timeout, $http, scores, Profile, STATE_CONFIG, Region) {
 	var $this = this;
 	this.phase = {};
 	this.data = [];
@@ -342,7 +343,7 @@ angular.module('starter.services', [])
 		rich: 100001,
 		poor: 100002
 	};
- 
+
 	function OrderData(initObj) {
 		_.map(initObj, function(val, key) {
 			this[key] = val;
@@ -413,9 +414,9 @@ angular.module('starter.services', [])
 				//fix files , isMine ,Tags
 				item.AttachFiles ? typeof item.AttachFiles === 'string' ? item.AttachFiles = item.AttachFiles.split(',') : 0 : 0;
 				item.isMine = $this.isMine(item.SUserID);
-				item.Tags=JSON.parse(item.Tags);
+				item.Tags = JSON.parse(item.Tags);
 				//add isTags
-				item.isTags= Region.isRuling( Profile.info.District,item.Tags.District);
+				Profile.info.District ? item.isTags = Region.isRuling(Profile.info.District, item.Tags.District) : 0; 
 				var item2 = new OrderData(item);
 				$this.data.push(item2);
 			}
@@ -464,11 +465,9 @@ angular.module('starter.services', [])
 				var r = _.findWhere($this.data, {
 					TaskID: ID
 				});
-				if (r)
-				{
+				if (r) {
 					dfd.resolve(r)
-					}
-				else{
+				} else {
 					dfd.reject();
 				}
 			});
@@ -478,9 +477,9 @@ angular.module('starter.services', [])
 	this.queryAll = function() {
 		var promises = [],
 			others = {
-				 State:0,
-				 others:1,
-				 District:Profile.info.District
+				State: 0,
+				others: 1,
+				District: Profile.info.District
 			},
 			mine = {
 				self: 'true'
@@ -618,237 +617,238 @@ angular.module('starter.services', [])
 })
 
 .service('PayAccount', function($q, $timeout, $http, $filter, Profile, PAYWAYNO_CONFIG) {
-	var $this = this;
-	this.data = [];
-	this.payWayNoCode = PAYWAYNO_CONFIG;
+		var $this = this;
+		this.data = [];
+		this.payWayNoCode = PAYWAYNO_CONFIG;
 
-	function _setData(items) {
-		if (items.length) {
-			_.each(items, function(item, index, list) {
-				$this.data.push(item);
+		function _setData(items) {
+			if (items.length) {
+				_.each(items, function(item, index, list) {
+					$this.data.push(item);
+				});
+			}
+			return $this.data;
+		}
+
+		this.get = function(ID) {
+			var dfd = $q.defer();
+			var r = _.findWhere($this.data, {
+				PAID: ID
+			});
+			if (r) dfd.resolve(r)
+
+			else {
+				dfd.reject(r)
+			}
+			return dfd.promise;
+		};
+		this.query = function(params, force) {
+			var dfd = $q.defer();
+			var params2 = $filter('setSD')(params);
+			$http({
+					method: 'GET',
+					url: "/aspx/payAccount.aspx",
+					params: params2
+				})
+				.then(function(result) {
+					var r = result.data;
+					dfd.resolve(_setData(r.data));
+				});
+
+
+			return dfd.promise;
+		};
+		this.getAll = function(params, force) {
+			return this.query(params, force).then(function() {
+				var r = _.find($this.data, function(ac) {
+					return ac.PayWayNo == $this.payWayNoCode.Wx;
+				});
+				if ((!r) && window.wx) {
+					$this.newWX();
+				}
+			});
+		};
+		this.newWX = function() {
+			var account = {}
+			account.CardNo = Profile.info.FakeID;
+			account.Outeruser = Profile.info.FakeID;
+			account.PayWayNo = $this.payWayNoCode.Wx;
+			account.Bank = "微信支付";
+			account.Title = Profile.info.NickName || Profile.info.LastName || 'FLNull';
+			account.FullName = Profile.info.NickName || Profile.info.LastName || 'FLNull';
+			$this.editCard(account).then(function() {
+				console.log('自动新增微信payaccount');
+				console.log($this.data);
 			});
 		}
-		return $this.data;
-	}
+		this.editCard = function(account) {
+			var dfd = $q.defer();
 
-	this.get = function(ID) {
-		var dfd = $q.defer();
-		var r = _.findWhere($this.data, {
-			PAID: ID
-		});
-		if (r) dfd.resolve(r)
+			var fixID = account.PAID,
+				accountSuffix = $filter('setTableSuffix')(account, 'payAccount'),
+				params2 = accountSuffix;
+			params2.UserID = Profile.info.UserID;
+			if (fixID) {
+				params2.PAID = fixID
+			}
+			$http.post("/handler/customer.ashx?act=PayAccountEdit", params2)
+				.then(function(result) {
+					var r = result.data;
+					if (r.status === '0') {
+						if (account.PAID) {
 
-		else {
-			dfd.reject(r)
-		}
-		return dfd.promise;
-	};
-	this.query = function(params, force) {
-		var dfd = $q.defer();
-		var params2 = $filter('setSD')(params);
-		$http({
-				method: 'GET',
-				url: "/aspx/payAccount.aspx",
-				params: params2
-			})
-			.then(function(result) {
-				var r = result.data;
-				dfd.resolve(_setData(r.data));
-			});
+						} else {
+							$this._PAIDFix().then(function(id) {
+								account.UserID = Profile.info.UserID;
+								account.PAID = id;
+								dfd.resolve(_setData([account]));
+							});
+						}
+					} else {
+						alert(r.msg);
+						dfd.reject();
+					}
 
-
-		return dfd.promise;
-	};
-	this.getAll = function(params, force) {
-		return this.query(params, force).then(function() {
-			var r = _.find($this.data, function(ac) {
+				});
+			return dfd.promise;
+		};
+		this._PAIDFix = function() {
+			var params2 = $filter('setSD')({});
+			var dfd = $q.defer();
+			$http({
+					method: 'GET',
+					url: "/aspx/payAccount.aspx",
+					params: params2
+				})
+				.then(function(result) {
+					var r = result.data;
+					dfd.resolve(r.data[0].PAID);
+				});
+			return dfd.promise;
+		};
+		this.withdrawWx = function(id, amount) {
+			var ac = _.find($this.data, function(ac) {
 				return ac.PayWayNo == $this.payWayNoCode.Wx;
 			});
-			if ((!r) && window.wx) {
-				$this.newWX();
-			}
-		});
-	};
-	this.newWX = function() {
-		var account = {}
-		account.CardNo = Profile.info.FakeID;
-		account.Outeruser = Profile.info.FakeID;
-		account.PayWayNo = $this.payWayNoCode.Wx;
-		account.Bank = "微信支付";
-		account.Title = Profile.info.NickName || Profile.info.LastName || 'FLNull';
-		account.FullName = Profile.info.NickName || Profile.info.LastName || 'FLNull';
-		$this.editCard(account).then(function() {
-			console.log('自动新增微信payaccount');
-			console.log($this.data);
-		});
-	}
-	this.editCard = function(account) {
-		var dfd = $q.defer();
+			return $this.withdraw(ac.PAID, amount);
+		};
+		this.withdraw = function(id, amount) {
+			var dfd = $q.defer();
+			//var back = Profile.consume(amount, 'Deposit');
+			//	if (back) {
+			var param = $filter('setTableSuffix')({
+				PAID: id,
+				safepwd: Profile.info.Cipher2,
+				amount: amount
+			}, 'withdraw');
+			var params2 = $filter('setSD')(param);
 
-		var fixID = account.PAID,
-			accountSuffix = $filter('setTableSuffix')(account, 'payAccount'),
-			params2 = accountSuffix;
-		params2.UserID = Profile.info.UserID;
-		if (fixID) {
-			params2.PAID = fixID
-		}
-		$http.post("/handler/customer.ashx?act=PayAccountEdit", params2)
-			.then(function(result) {
-				var r = result.data;
-				if (r.status === '0') {
-					if (account.PAID) {
-
+			$http.post("/handler/customer.ashx?act=Withdraw", params2)
+				.then(function(result) {
+					var r = result.data;
+					if (r.status === '0') {
+						Profile.info.Score -= amount;
+						dfd.resolve();
 					} else {
-						$this._PAIDFix().then(function(id) {
-							account.UserID = Profile.info.UserID;
-							account.PAID = id;
-							dfd.resolve(_setData([account]));
-						});
+						//back
+						//back();  
+						alert(r.msg);
+
+						dfd.reject();
 					}
-				} else {
-					alert(r.msg);
-					dfd.reject();
-				}
+				});
+			//		} else {
+			//			alert('金额不足');
+			//			dfd.reject();
+			//		}
 
-			});
-		return dfd.promise;
-	};
-	this._PAIDFix = function() {
-		var params2 = $filter('setSD')({});
-		var dfd = $q.defer();
-		$http({
-				method: 'GET',
-				url: "/aspx/payAccount.aspx",
-				params: params2
-			})
-			.then(function(result) {
-				var r = result.data;
-				dfd.resolve(r.data[0].PAID);
-			});
-		return dfd.promise;
-	};
-	this.withdrawWx = function(id, amount) {
-		var ac = _.find($this.data, function(ac) {
-			return ac.PayWayNo == $this.payWayNoCode.Wx;
-		});
-		return $this.withdraw(ac.PAID, amount);
-	};
-	this.withdraw = function(id, amount) {
-		var dfd = $q.defer();
-		//var back = Profile.consume(amount, 'Deposit');
-		//	if (back) {
-		var param = $filter('setTableSuffix')({
-			PAID: id,
-			safepwd: Profile.info.Cipher2,
-			amount: amount
-		}, 'withdraw');
-		var params2 = $filter('setSD')(param);
+			return dfd.promise;
+		};
 
-		$http.post("/handler/customer.ashx?act=Withdraw", params2)
-			.then(function(result) {
-				var r = result.data;
-				if (r.status === '0') {
-				 	Profile.info.Score-=amount;
-					dfd.resolve();
-				} else {
-					//back
-					//back();  
-					alert(r.msg);
+	})
+	.service('PayRecord', function($q, $timeout, $http, $filter, principal, Profile) {
 
-					dfd.reject();
-				}
-			});
-		//		} else {
-		//			alert('金额不足');
-		//			dfd.reject();
-		//		}
-
-		return dfd.promise;
-	};
-
-})
-.service('PayRecord', function($q, $timeout, $http, $filter, principal, Profile) {
-
-	var $this = this,
-		PageNum = {};
-	this.phase = {};
-	this.data = [];
-	this.IsLast = {};
+		var $this = this,
+			PageNum = {};
+		this.phase = {};
+		this.data = [];
+		this.IsLast = {};
 
 
-	function _setData(items) {
-		if (items.length) {
-			_.each(items, function(item, index, list) {
-				$this.data.push(item);
-			});
+		function _setData(items) {
+			if (items.length) {
+				_.each(items, function(item, index, list) {
+					$this.data.push(item);
+				});
+			}
+			return $this.data;
 		}
-		return $this.data;
-	}
 
-	this.get = function(ID) {
-		var dfd = $q.defer();
-		var r = _.findWhere($this.data, {
-			PayID: ID
-		});
-		if (r) dfd.resolve(r)
-
-		else {
-			dfd.reject(r)
-		}
-		return dfd.promise;
-	};
-	this.nextPage = function(paramsCe) {
-
-
-		var keyName = $filter('getKeyName')(paramsCe),paramsCe= _.clone(paramsCe),
-			next_page = PageNum[keyName] ? ++PageNum[keyName] : PageNum[keyName] = 1,
-			params = _.extendOwn(paramsCe, {
-				page: next_page
+		this.get = function(ID) {
+			var dfd = $q.defer();
+			var r = _.findWhere($this.data, {
+				PayID: ID
 			});
+			if (r) dfd.resolve(r)
 
-		return $this.query(params).then(function() {}, function() {
-			$this.IsLast[keyName] = true;
-			PageNum[keyName] -= 1;
-		})
+			else {
+				dfd.reject(r)
+			}
+			return dfd.promise;
+		};
+		this.nextPage = function(paramsCe) {
 
-	};
-	this.query = function(params, force) {
-		var dfd = $q.defer();
-		if ((!force) && $this.phase.query && $this.phase.query.state === 0) {
-			dfd.reject();
-		} else {
-			$this.phase.query = dfd.promise;
-			params.SUserID = Profile.info.UserID;
-			params.CUserID = Profile.info.SUserID;
 
-			$http({
-				method: 'GET',
-				url: "/aspx/PayRecord.aspx",
-				params: params
+			var keyName = $filter('getKeyName')(paramsCe),
+				paramsCe = _.clone(paramsCe),
+				next_page = PageNum[keyName] ? ++PageNum[keyName] : PageNum[keyName] = 1,
+				params = _.extendOwn(paramsCe, {
+					page: next_page
+				});
+
+			return $this.query(params).then(function() {}, function() {
+				$this.IsLast[keyName] = true;
+				PageNum[keyName] -= 1;
 			})
 
-			.then(function(result) {
-				var r = result.data;
-				if (r.data.length) {
-					dfd.resolve(_setData(r.data));
-				} else {
-					dfd.reject(r);
-				}
-			});
+		};
+		this.query = function(params, force) {
+			var dfd = $q.defer();
+			if ((!force) && $this.phase.query && $this.phase.query.state === 0) {
+				dfd.reject();
+			} else {
+				$this.phase.query = dfd.promise;
+				params.SUserID = Profile.info.UserID;
+				params.CUserID = Profile.info.SUserID;
 
-		}
+				$http({
+					method: 'GET',
+					url: "/aspx/PayRecord.aspx",
+					params: params
+				})
 
-		return dfd.promise;
-	};
+				.then(function(result) {
+					var r = result.data;
+					if (r.data.length) {
+						dfd.resolve(_setData(r.data));
+					} else {
+						dfd.reject(r);
+					}
+				});
+
+			}
+
+			return dfd.promise;
+		};
 
 
 
 
-})
+	})
 
 .service('Login2Initial', function($q, $timeout, scores, Profile, Order, Taker, Profile, Region, PayAccount) {
 		this.init = function(data) {
-			var secondP = []; 
+			var secondP = [];
 			//info 
 			Profile._getInfo();
 			secondP.push(Order.queryAll());
@@ -856,7 +856,7 @@ angular.module('starter.services', [])
 			secondP.push(Region.getRegion());
 			secondP.push(PayAccount.getAll({}));
 			return $q.all(secondP).then(function() {
-				 taker = Taker.queryMine();
+				taker = Taker.queryMine();
 			});
 		};
 

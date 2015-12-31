@@ -6,8 +6,55 @@
 // 'starter.services' is found in services.js
 // 'starter.controllers' is found in controllers.js
 angular.module('starter', [
-		'ionic', 'starter.controllers', 'starter.services', 'starter.directives', 'common.services','starter.tpl'
-	])
+		'ionic', 'starter.controllers', 'starter.services', 'starter.directives', 'common.services', 'starter.tpl'
+	], function($provide) {
+		$provide.factory('myHttpInterceptor', function($q) {
+			return {
+				// optional method
+				'request': function(config) {
+					// do something on success
+					return config;
+				},
+
+				// optional method
+				'requestError': function(rejection) {
+					// do something on error
+					console.log('requestError');
+					console.log(rejection);
+					rejection.config ? document.write(JSON.stringify(rejection.config.params) + rejection.data)
+					:document.write(JSON.stringify(rejection));
+					return $q.reject(rejection);
+				},
+
+
+
+				// optional method
+				'response': function(response) {
+					// do something on success
+					return response;
+				},
+
+				// optional method
+				'responseError': function(rejection) {
+					// do something on error 
+
+					if (rejection.status !== 0) {
+						console.log('responseError');
+						console.log(rejection);
+					rejection.config ? document.write(JSON.stringify(rejection.config.params) + rejection.data)
+					:document.write(JSON.stringify(rejection));
+						alert('远程服务器错误,请稍候再试试......' + rejection.status);
+						return $q.reject(rejection);
+					} else {
+						return rejection;
+					}
+
+
+
+				}
+			};
+		});
+	})
 	.filter('range', [
 
 		function() {
@@ -100,7 +147,7 @@ angular.module('starter', [
 			PayWayNo: 50025
 		}]
 	})
-	.constant('BASEURL_CONFIG','http://kfx.la')
+	.constant('BASEURL_CONFIG', 'http://kfx.la')
 	.constant('trainningCourses', {
 		courses: [{
 			title: 'Step 1:',
@@ -117,7 +164,7 @@ angular.module('starter', [
 			controllerAs: 'stepPanel',
 			position: ['$window', 'stepPanel',
 				function($window, stepPanel) {
-					console.log(stepPanel); 
+					console.log(stepPanel);
 					var win = angular.element($window);
 					console.log(win.width());
 					console.log(stepPanel.width());
@@ -155,9 +202,9 @@ angular.module('starter', [
 
 
 
-.config(function($sceDelegateProvider,$stateProvider, $urlRouterProvider, $ionicConfigProvider, $httpProvider, $compileProvider) {
+.config(function($sceDelegateProvider, $stateProvider, $urlRouterProvider, $ionicConfigProvider, $httpProvider, $compileProvider) {
 
-$sceDelegateProvider.resourceUrlWhitelist(['self','http://kfx.la/**','http://each.sinaapp.com/**']);
+	$sceDelegateProvider.resourceUrlWhitelist(['self', 'http://kfx.la/**', 'http://each.sinaapp.com/**']);
 	//unsafe
 	$compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|wxlocalresource|wxLocalResource|ftp|weixin|mailto|tel|file|sms):/);
 	$compileProvider.imgSrcSanitizationWhitelist(/^\s*(https?|ftp|wxlocalresource|wxLocalResource|file|weixin|chrome-extension):|data:image\//);
@@ -327,39 +374,39 @@ $sceDelegateProvider.resourceUrlWhitelist(['self','http://kfx.la/**','http://eac
 		})
 
 	.state('tab.cashWD', {
-		url: '^/account/cashWD',
-		views: {
-			'tab-account': {
-				templateUrl: 'tab-cashWD.html',
-				controller: 'CashWDCtrl'
+			url: '^/account/cashWD',
+			views: {
+				'tab-account': {
+					templateUrl: 'tab-cashWD.html',
+					controller: 'CashWDCtrl'
+				}
 			}
-		}
-	})
-	.state('tab.withdrawList', {
-		url: '^/withdrawList',
-		views: {
-			'tab-account': {
-				templateUrl: 'tab-withdraw-list.html',
-				controller: 'WithdrawListCtrl'
+		})
+		.state('tab.withdrawList', {
+			url: '^/withdrawList',
+			views: {
+				'tab-account': {
+					templateUrl: 'tab-withdraw-list.html',
+					controller: 'WithdrawListCtrl'
+				}
 			}
-		}
-	})
-	//		.state('tab.restricted', {
-	//  url: '/restricted',
-	//  data: {
-	//    roles: ['Admin']
-	//  },
-	//  views: {
-	//    'content@': {
-	//      templateUrl: 'restricted.html'
-	//    }
-	//  }
-	//})
+		})
+		//		.state('tab.restricted', {
+		//  url: '/restricted',
+		//  data: {
+		//    roles: ['Admin']
+		//  },
+		//  views: {
+		//    'content@': {
+		//      templateUrl: 'restricted.html'
+		//    }
+		//  }
+		//})
 
- 
+
 	$urlRouterProvider.otherwise('/account');
 
-
+	$httpProvider.interceptors.push('myHttpInterceptor');
 	$httpProvider.defaults.headers.put['Content-Type'] = 'application/x-www-form-urlencoded';
 	$httpProvider.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
 

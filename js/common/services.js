@@ -988,7 +988,7 @@ var commonServices = angular.module('common.services',[])
 						.error(function() {
 							_identity = null;
 							_authenticated = false;
-							deferred.resolve(_identity);
+							deferred.reject(_identity);
 						});
 
 					return deferred.promise;
@@ -1142,7 +1142,9 @@ var commonServices = angular.module('common.services',[])
 				return _.pluck(all.reverse(), 'RegionName');
 			};
 			this.isRuling=function(child,parent){
-			return	String.prototype.indexOf.apply(child, [parent])>-1;
+				 
+					return	child && ( String.prototype.indexOf.apply(child, [parent])>-1  ) ; 
+				 
 			};
 			//alias getChild
 			this.isDirect = function(any) {
