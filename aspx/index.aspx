@@ -12,7 +12,6 @@
 		<link href="//cdn.bootcss.com/ionic/1.1.0/css/ionic.min.css" rel="stylesheet"> 
 					<link href="css/style.css" rel="stylesheet">	
 	</head>
-
 	<body>
 		<ion-nav-bar class="bar-stable">
 			<ion-nav-back-button>
@@ -20,7 +19,12 @@
 		</ion-nav-bar>
 		<ion-nav-view></ion-nav-view>
 	</body>
-
+	<script>window.onerror = function() {
+  alert("“发生错误！”");
+  debugger;
+  return true;}
+	 
+	</script>
 	<!-- third party js -->
 	<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
 	<script src="//cdn.bootcss.com/underscore.js/1.8.3/underscore-min.js"></script>

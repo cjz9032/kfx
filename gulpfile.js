@@ -10,7 +10,7 @@ var knownOptions = {
 };
 
 var withDebug=minimist(process.argv.slice(2), knownOptions).env === 'debug' ;
- 
+ withDebug=false;
 var plugins = require('gulp-load-plugins')();
 var ftpOption=FO;
 function ftpDO(path){
@@ -71,7 +71,7 @@ module :'starter.tpl'
 	
 	//.pipe(plugins.stripDebug()) 
 	
-	  .pipe(plugins.uglify())
+	 // .pipe(plugins.uglify())
 	  .pipe(plugins.concat('all.min.js'))
 	  .pipe(plugins.rev())  
       .pipe(gulp.dest('build/js'))

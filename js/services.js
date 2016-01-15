@@ -484,7 +484,8 @@ angular.module('starter.services', [])
 			mine = {
 				self: 'true'
 			};
-		promises.push(this.query(others, true));
+			if(Profile.info.District) promises.push(this.query(others, true));
+		
 		promises.push(this.query(mine, true));
 		return $q.all(promises);
 	}
