@@ -184,6 +184,21 @@ angular.module('starter', [
 		// track the state the user wants to go to; authorization service needs this
 		$rootScope.toState = toState;
 		$rootScope.toStateParams = toStateParams;
+		
+		var hideList = [],
+		hideList2 = ['tab.orderList'];
+		
+		document.title=toState.t||'快分享';  
+				if (_.contains(hideList2, toState.name)) {
+			$rootScope.hideNavs = true;
+		} else {
+			$rootScope.hideNavs = false;
+		}
+//		if (_.contains(hideList, toState.name)) {
+//			$rootScope.hideTabs = true;
+//		} else {
+//			$rootScope.hideTabs = false;
+//		}
 		// if the principal is resolved, do an authorization check immediately. otherwise,
 		// it'll be done when the state it resolved. 
 		//if (principal.isIdentityResolved()) authorization.authorize();
@@ -258,7 +273,8 @@ angular.module('starter', [
 					templateUrl: 'tab-order-list.html',
 					controller: 'OrderListCtrl'
 				}
-			}
+			},
+			t:'任务大厅'
 		})
 		.state('tab.takerList', {
 			url: '^/takerList/:TypeID/',
@@ -339,7 +355,8 @@ angular.module('starter', [
 					templateUrl: 'tab-account.html',
 					controller: 'AccountCtrl'
 				}
-			}
+			},
+			t:'个人中心'
 		})
 		.state('tab.help', {
 			url: '^/help',

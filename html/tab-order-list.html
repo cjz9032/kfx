@@ -9,8 +9,8 @@
 					  -->
 				</ion-nav-title>
 
-				<div class="tabs-striped tabs-top tabs-background-positive tabs-color-light">
-					<div class="tabs">
+				<div class="tabs-striped tabs-top tabs-background-positive tabs-color-light"  style="top:0px;">
+					<div class="tabs" style="top:0px;">
 						<a class="tab-item" ng-class="{'active':params.TypeID==Order.typeIDcode.rich}" ui-sref="tab.orderList({TypeID:Order.typeIDcode.rich,state:1})">
                                               图文广告
                     </a>
@@ -20,7 +20,7 @@
 					</div>
 				</div>
 
-				<ion-content style="background-color:  #EEEEEE;top:88px">
+				<ion-content style="background-color:  #EEEEEE;top:44px">
 
 					<ion-list>
 						<!--
@@ -28,7 +28,7 @@
                         -->
 						
 						<ion-item ng-disabled="item.IsTaker" ui-sref="tab.orderView({TaskID:item.TaskID})" item-height="96px" item-width="100%" collection-repeat="item in 
-						(Order.data  | filter: {TypeID:params.TypeID*1,State:1} :true |   filter: {  State: 1 } :true       ) track by item.TaskID">
+						(Order.data  | filter: {TypeID:params.TypeID*1,State:1} :true       ) track by item.TaskID">
 
 							<span style="font-size: 1.2em;font-weight: 700;">{{item.Title}}</span>
 
