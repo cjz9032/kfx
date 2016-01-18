@@ -28,7 +28,7 @@
                         -->
 						
 						<ion-item ng-disabled="item.IsTaker" ui-sref="tab.orderView({TaskID:item.TaskID})" item-height="96px" item-width="100%" collection-repeat="item in 
-						(Order.data  | filter: {TypeID:params.TypeID*1,State:1} :true          ) track by item.TaskID">
+						(Order.data  | filter: {TypeID:params.TypeID*1,State:1} :true |   filter: {  State: 1 } :true       ) track by item.TaskID">
 
 							<span style="font-size: 1.2em;font-weight: 700;">{{item.Title}}</span>
 

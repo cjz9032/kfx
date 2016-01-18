@@ -223,7 +223,8 @@ angular.module('starter', [
 	$ionicConfigProvider.platform.android.views.transition('none');
 	// Learn more here: https://github.com/angular-ui/ui-routerv 
 	$ionicConfigProvider.backButton.previousTitleText(false);
-	$ionicConfigProvider.views.maxCache(50);
+	$ionicConfigProvider.views.maxCache(7);
+	$ionicConfigProvider.views.forwardCache(true);
 	$stateProvider
 
 		.state('tab', {

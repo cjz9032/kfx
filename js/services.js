@@ -414,7 +414,10 @@ angular.module('starter.services', [])
 				//fix files , isMine ,Tags
 				item.AttachFiles ? typeof item.AttachFiles === 'string' ? item.AttachFiles = item.AttachFiles.split(',') : 0 : 0;
 				item.isMine = $this.isMine(item.SUserID);
-				item.Tags = JSON.parse(item.Tags);
+				try{
+					item.Tags = JSON.parse(item.Tags);
+				}catch(e){ }
+				
 				//add isTags
 				Profile.info.District ? item.isTags = Region.isRuling(Profile.info.District, item.Tags.District) : 0; 
 				var item2 = new OrderData(item);
@@ -477,7 +480,7 @@ angular.module('starter.services', [])
 	this.queryAll = function() {
 		var promises = [],
 			others = {
-				State: 0,
+				State: 1,
 				others: 1,
 				
 			},
@@ -485,7 +488,8 @@ angular.module('starter.services', [])
 			mine = {
 				self: 'true'
 			};
-			//if(Profile.info.District) promises.push(this.query(others, true));
+			//if(Profile.info.District) 
+			promises.push(this.query(others, true));
 		
 		promises.push(this.query(mine, true));
 		return $q.all(promises);
