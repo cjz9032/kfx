@@ -2,8 +2,11 @@
 			<ion-view>
 
 				<ion-nav-title>
-					任务大厅{{Profile.info.District?'':'(暂无地区,无法接单)'}}
-					<!-- {{params.TypeID===Order.typeIDcode.poor.toString()? '任务大厅(文章)' : '任务大厅(图文)' }}  -->
+					任务大厅
+					<!--
+						{{Profile.info.District?'':'(暂无地区,无法接单)'}}
+					{{params.TypeID===Order.typeIDcode.poor.toString()? '任务大厅(文章)' : '任务大厅(图文)' }}
+					  -->
 				</ion-nav-title>
 
 				<div class="tabs-striped tabs-top tabs-background-positive tabs-color-light">
@@ -34,7 +37,8 @@
     我的项目
      </span>
 							<button ng-disabled="item.IsTaker" ng-if="!item.isMine" class="button button-small button-balanced">
-								{{item.IsTaker?'已接单':'快来抢'}}  {{isTags? '' : '(非所在地)' }} 
+								{{item.IsTaker?'已接单':'快来抢'}} 
+								<!-- {{isTags? '' : '(非所在地)' }} --> 
 							</button>
 							<br /> <span ng-if="item.TypeID===Order.typeIDcode.poor">  {{item.Price}}元 </span>
 							</span>

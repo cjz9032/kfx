@@ -479,12 +479,13 @@ angular.module('starter.services', [])
 			others = {
 				State: 0,
 				others: 1,
-				District: Profile.info.District
+				
 			},
+			// District: Profile.info.District
 			mine = {
 				self: 'true'
 			};
-			if(Profile.info.District) promises.push(this.query(others, true));
+			//if(Profile.info.District) promises.push(this.query(others, true));
 		
 		promises.push(this.query(mine, true));
 		return $q.all(promises);
